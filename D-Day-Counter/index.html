@@ -1,50 +1,68 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>D-Day-Counter</title>
     <script>
-
-        const dateFormMarker = function(){
-        const inputYear = document.querySelector('#target-year-input').value;
-        const inputMonth = document.querySelector('#target-month-input').value;
-        const inputDate = document.querySelector('#target-date-input').value;
+      const dateFormMarker = function () {
+        const inputYear = document.querySelector("#target-year-input").value;
+        const inputMonth = document.querySelector("#target-month-input").value;
+        const inputDate = document.querySelector("#target-date-input").value;
 
         // const dateFormat = inputYear + '-' + inputMonth +'-' + inputDate  ;
 
-         const dateFormat = `${inputYear}-${inputMonth}-${inputDate}`;
-         
-          return dateFormat;
-    };
+        const dateFormat = `${inputYear}-${inputMonth}-${inputDate}`;
 
+        return dateFormat;
+      };
 
-    const counterMaker = function () {
+      const counterMaker = function () {
         const targetDateInput = dateFormMarker();
-        const nowDate = new Date();
+        const nowDate = new Date(); // .setHours(0,0,0,0); 설정할시 자정 기준 지금은 오전 기준
         const targetDate = new Date(targetDateInput);
         const remaining = (targetDate - nowDate) / 1000; //밀리세컨드 --> 초로 변환하기
 
-         const remainingDate = Math.floor(remaining / (60 * 60 * 24 ));  //날짜구하기 초 x 분 x 시간
-         const remainingHours = Math.floor(remaining / (60 * 60 )) % 24 ; //시간구하기 초 x 분 % 24(몫은 일이되고 나머지는 시간)
-         const remainingMin = Math.floor(remaining / 60) % 60; //분구하기 초 /  1분은 60초가 멕시멈이라서 60으로 나머지구하기 
-         const remainingSec = Math.floor(remaining) % 60; // 구해진 초로 멕시멈 60초로 나누어 나머지값 구하기
-    
-         console.log(remainingDate, remainingHours, remainingMin,remainingSec);
-    };
+        const remainingDate = Math.floor(remaining / (60 * 60 * 24)); //날짜구하기 초 x 분 x 시간
+        const remainingHours = Math.floor(remaining / (60 * 60)) % 24; //시간구하기 초 x 분 % 24(몫은 일이되고 나머지는 시간)
+        const remainingMin = Math.floor(remaining / 60) % 60; //분구하기 초 /  1분은 60초가 멕시멈이라서 60으로 나머지구하기
+        const remainingSec = Math.floor(remaining) % 60; // 구해진 초로 멕시멈 60초로 나누어 나머지값 구하기
 
-
-
-
+        console.log(remainingDate, remainingHours, remainingMin, remainingSec);
+      };
     </script>
-  
-</head>
-<body>
-    <input id="target-year-input" class="target-input"/>
-     <input id="target-month-input" class="target-input"/>
-      <input id="target-date-input" class="target-input"/>
-      <button onclick="counterMaker()">버튼</button>
-       
-</body>
+  </head>
+  <body>
+    <h1>D-Day</h1>
+    <div id="d-day-container">
+      <div class="d-day-child-container">
+        <span id="days">0</span>
+        <span>일</span>
+      </div>
+
+      <div class="d-day-child-container">
+        <span id="hours">0</span>
+        <span>시간</span>
+      </div>
+
+      <div class="d-day-child-container">
+        <span id="min">0</span>
+        <span>분</span>
+      </div>
+
+      <div class="d-day-child-container">
+        <span id="sec">0</span>
+        <span>초</span>
+      </div>
+    </div>
+
+    <div id="target-selector">
+      <input id="target-year-input" class="target-input" />
+      <input id="target-month-input" class="target-input" />
+      <input id="target-date-input" class="target-input" />
+    </div>
+
+    <button onclick="counterMaker()">카운트 다운 시작</button>
+  </body>
 </html>
