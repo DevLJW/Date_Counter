@@ -3,6 +3,8 @@ const container = document.querySelector("#d-day-container"); //일시간분초
 DayMessage.innerHTML = "<h3>D -Day를 입력 해주세요.</h3>";
 container.style.display = "none"; //처음엔 안보이게 설정
 // DayMessage.textContent = "D -Day";
+const intervalIdArr = []; //IntervalID 저장
+
 const dateFormMarker = function () {
   const inputYear = document.querySelector("#target-year-input").value;
   const inputMonth = document.querySelector("#target-month-input").value;
@@ -25,6 +27,7 @@ const counterMaker = function () {
     DayMessage.innerHTML = "타이머가 종료 되었습니다.";
     DayMessage.style.display = "flex";
     container.style.display = "none"; //NAN 표시 지우기
+    setClearInterval();
     return;
   } else if (isNaN(remaining)) {
     //만약 잘못된 날짜가 들어왔다면, 유효한 시간대가 아닙니다 출력
@@ -32,6 +35,7 @@ const counterMaker = function () {
     DayMessage.innerHTML = "유효한 시간대가 아닙니다.";
     DayMessage.style.display = "flex";
     container.style.display = "none"; //NAN 표시 지우기
+    setClearInterval();
     return;
   }
 
@@ -83,4 +87,13 @@ const starter = function () {
   counterMaker(); // setInterval같은경우 1초 뒤에 실행이 되어 자체적으로 강제 한번 실행 0 0 0표기 방지
   const intervalId = setInterval(counterMaker, 1000); //1초마다 실행
   //setInterval의 반환값은 interval의 고유의값이 반환 된다.
+  intervalIdArr.push(intervalId);
+};
+
+const setClearInterval = function () {
+  DayMessage.innerHTML = "<h3>D -Day를 입력 해주세요.</h3>";
+  container.style.display = "flex"; //처음엔 안보이게 설정
+  for (let i = 0; i < intervalIdArr.length; i++) {
+    clearInterval(intervalIdArr[i]);
+  }
 };
