@@ -46,10 +46,17 @@ const counterMaker = function () {
     sec: document.getElementById("sec"),
   };
 
-  documentObj["days"].textContent = remainObj["remainingDate"];
-  documentObj["hours"].textContent = remainObj["remainingHours"];
-  documentObj["min"].textContent = remainObj["remainingMin"];
-  documentObj["sec"].textContent = remainObj["remainingSec"];
+  const timeKeys = Object.keys(remainObj); //객체의 키만 가져오기 값X
+  const docKeys = Object.keys(documentObj);
 
-  console.log(remainingDate, remainingHours, remainingMin, remainingSec);
+  for (let i = 0; i < timeKeys.length; i++) {
+    documentObj[docKeys[i]].textContent = remainObj[timeKeys[i]];
+  }
+
+  // documentObj["days"].textContent = remainObj["remainingDate"];
+  // documentObj["hours"].textContent = remainObj["remainingHours"];
+  // documentObj["min"].textContent = remainObj["remainingMin"];
+  // documentObj["sec"].textContent = remainObj["remainingSec"];
+
+  // console.log(remainingDate, remainingHours, remainingMin, remainingSec);
 };
