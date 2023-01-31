@@ -91,9 +91,13 @@ const starter = function () {
 };
 
 const setClearInterval = function () {
-  DayMessage.innerHTML = "<h3>D -Day를 입력 해주세요.</h3>";
-  container.style.display = "flex"; //처음엔 안보이게 설정
   for (let i = 0; i < intervalIdArr.length; i++) {
     clearInterval(intervalIdArr[i]);
   }
+};
+
+const resetTimer = function () {
+  DayMessage.innerHTML = "<h3>D -Day를 입력 해주세요.</h3>";
+  container.style.display = "flex"; //처음엔 안보이게 설정
+  setClearInterval();
 };
