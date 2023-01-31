@@ -1,9 +1,9 @@
 const DayMessage = document.querySelector("#d-day-Message"); //D-day메세지
 const container = document.querySelector("#d-day-container"); //일시간분초
-DayMessage.innerHTML = "<h3>D -Day를 입력 해주세요.</h3>";
-container.style.display = "none"; //처음엔 안보이게 설정
+
 // DayMessage.textContent = "D -Day";
 const intervalIdArr = []; //IntervalID 저장
+const savedDate = localStorage.getItem("saveDate");
 
 const dateFormMaker = function () {
   const inputYear = document.querySelector("#target-year-input").value;
@@ -18,6 +18,10 @@ const dateFormMaker = function () {
 };
 
 const counterMaker = function (data) {
+  if (data !== savedDate) {
+    localStorage.setItem("saveDate", data);
+  }
+
   const nowDate = new Date(); // .setHours(0,0,0,0); 설정할시 자정 기준 지금은 오전 기준
   const targetDate = new Date(data);
   const remaining = (targetDate - nowDate) / 1000; //(목표날짜 - 현재시간)밀리세컨드 --> 초로 변환하기
@@ -51,6 +55,7 @@ const counterMaker = function (data) {
   };
 
   const format = function (time) {
+    //10초 이하 앞에 0 붙히기
     if (time < 10) {
       return "0" + time;
     } else {
@@ -89,8 +94,11 @@ const counterMaker = function (data) {
   // console.log(remainingDate, remainingHours, remainingMin, remainingSec);
 };
 
-const starter = function () {
-  const targetDateInput = dateFormMaker();
+const starter = function (targetDateInput) {
+  if (!targetDateInput) {
+    targetDateInput = dateFormMaker();
+  }
+
   container.style.display = "flex";
   DayMessage.style.display = "none";
   setClearInterval(); //기존에 존재하던 인터벌 삭제
@@ -101,6 +109,7 @@ const starter = function () {
 };
 
 const setClearInterval = function () {
+  localStorage.removeItem("saveDate");
   for (let i = 0; i < intervalIdArr.length; i++) {
     clearInterval(intervalIdArr[i]);
   }
@@ -108,6 +117,16 @@ const setClearInterval = function () {
 
 const resetTimer = function () {
   DayMessage.innerHTML = "<h3>D -Day를 입력 해주세요.</h3>";
-  container.style.display = "flex"; //처음엔 안보이게 설정
+  DayMessage.style.display = "flex";
+  container.style.display = "none"; //처음엔 안보이게 설정
+
   setClearInterval();
 };
+
+if (savedDate) {
+  //로컬스토리지에 데이터가 존재한경우
+  starter(savedDate); //페이지가 실행 될때 마다 실행
+} else {
+  DayMessage.innerHTML = "<h3>D -Day를 입력 해주세요.</h3>";
+  container.style.display = "none"; //처음엔 안보이게 설정
+}
