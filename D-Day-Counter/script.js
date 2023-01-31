@@ -5,7 +5,7 @@ container.style.display = "none"; //처음엔 안보이게 설정
 // DayMessage.textContent = "D -Day";
 const intervalIdArr = []; //IntervalID 저장
 
-const dateFormMarker = function () {
+const dateFormMaker = function () {
   const inputYear = document.querySelector("#target-year-input").value;
   const inputMonth = document.querySelector("#target-month-input").value;
   const inputDate = document.querySelector("#target-date-input").value;
@@ -17,10 +17,9 @@ const dateFormMarker = function () {
   return dateFormat;
 };
 
-const counterMaker = function () {
-  const targetDateInput = dateFormMarker();
+const counterMaker = function (data) {
   const nowDate = new Date(); // .setHours(0,0,0,0); 설정할시 자정 기준 지금은 오전 기준
-  const targetDate = new Date(targetDateInput);
+  const targetDate = new Date(data);
   const remaining = (targetDate - nowDate) / 1000; //(목표날짜 - 현재시간)밀리세컨드 --> 초로 변환하기
   //만약 remaining이 0이면(차이시간) 타이머가 종료
   if (remaining <= 0) {
@@ -51,12 +50,21 @@ const counterMaker = function () {
     remainingSec: Math.floor(remaining) % 60,
   };
 
+  const format = function (time) {
+    if (time < 10) {
+      return "0" + time;
+    } else {
+      return time;
+    }
+  };
+
   const documentArr = ["days", "hours", "min", "sec"];
   const timeKeys = Object.keys(remainObj); //객체의 키만 가져오기 값X
   let i = 0;
   // for of 배열에 많이 사용
   for (let tag of documentArr) {
-    document.getElementById(tag).textContent = remainObj[timeKeys[i]];
+    const remainingTime = format(remainObj[timeKeys[i]]);
+    document.getElementById(tag).textContent = remainingTime;
     i++;
   }
 
@@ -82,10 +90,12 @@ const counterMaker = function () {
 };
 
 const starter = function () {
+  const targetDateInput = dateFormMaker();
   container.style.display = "flex";
   DayMessage.style.display = "none";
-  counterMaker(); // setInterval같은경우 1초 뒤에 실행이 되어 자체적으로 강제 한번 실행 0 0 0표기 방지
-  const intervalId = setInterval(counterMaker, 1000); //1초마다 실행
+  setClearInterval(); //기존에 존재하던 인터벌 삭제
+  counterMaker(targetDateInput); // setInterval같은경우 1초 뒤에 실행이 되어 자체적으로 강제 한번 실행 0 0 0표기 방지
+  const intervalId = setInterval(() => counterMaker(targetDateInput), 1000); //1초마다 실행
   //setInterval의 반환값은 interval의 고유의값이 반환 된다.
   intervalIdArr.push(intervalId);
 };
